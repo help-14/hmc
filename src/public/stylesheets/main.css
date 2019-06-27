@@ -18,3 +18,15 @@
 #datetime {
     padding: 50px;
 }
+
+.menu-row {
+
+}
+
+.menu-item {
+
+}
+
+.menu-selected {
+    border: 5px solid white;
+}

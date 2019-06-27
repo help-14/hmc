@@ -30,25 +30,45 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="app.js" />
+    <Content Include="public\favicon.ico" />
     <Content Include="public\images\bg.jpg" />
+    <Content Include="public\js\bootstrap.bundle.min.js" />
+    <Content Include="public\js\jquery.min.js" />
+    <Content Include="public\js\moment.min.js" />
     <Content Include="public\stylesheets\all.min.css" />
+    <Content Include="public\stylesheets\bootstrap.min.css" />
+    <Content Include="public\stylesheets\carousel.css" />
+    <Content Include="public\webfonts\fa-brands-400.eot" />
+    <Content Include="public\webfonts\fa-brands-400.svg" />
+    <Content Include="public\webfonts\fa-brands-400.ttf" />
+    <Content Include="public\webfonts\fa-brands-400.woff" />
+    <Content Include="public\webfonts\fa-brands-400.woff2" />
+    <Content Include="public\webfonts\fa-regular-400.eot" />
+    <Content Include="public\webfonts\fa-regular-400.svg" />
+    <Content Include="public\webfonts\fa-regular-400.ttf" />
+    <Content Include="public\webfonts\fa-regular-400.woff" />
+    <Content Include="public\webfonts\fa-regular-400.woff2" />
+    <Content Include="public\webfonts\fa-solid-900.eot" />
+    <Content Include="public\webfonts\fa-solid-900.svg" />
+    <Content Include="public\webfonts\fa-solid-900.ttf" />
+    <Content Include="public\webfonts\fa-solid-900.woff" />
+    <Content Include="public\webfonts\fa-solid-900.woff2" />
     <Content Include="routes\index.js" />
     <Content Include="routes\users.js" />
     <Content Include="package.json" />
     <Content Include="public\stylesheets\main.css" />
     <Content Include="README.md" />
-    <Content Include="template\index.html" />
-    <Content Include="views\index.pug" />
-    <Content Include="views\layout.pug" />
-    <Content Include="views\error.pug" />
+    <Content Include="views\error.ejs" />
+    <Content Include="views\index.ejs" />
+    <Content Include="views\users.ejs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="public\" />
     <Folder Include="public\images\" />
     <Folder Include="public\js\" />
     <Folder Include="public\stylesheets\" />
+    <Folder Include="public\webfonts\" />
     <Folder Include="routes\" />
-    <Folder Include="template\" />
     <Folder Include="views\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
