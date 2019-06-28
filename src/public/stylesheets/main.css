@@ -20,13 +20,27 @@
 }
 
 .menu-row {
-
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
 .menu-item {
+    border: 5px solid transparent;
+    position: relative;
+    display: inline-block;
+}
 
+.small-menu-item{
+    width: 250px;
+    height: 150px;
 }
 
 .menu-selected {
     border: 5px solid white;
+}
+
+table {
+    border: 0px none transparent;
+    margin: 0;
+    padding: 0;
 }
