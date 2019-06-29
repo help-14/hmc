@@ -10,70 +10,49 @@ var selectedCol = 0;
 var table = [];
 
 //find all menu items
-$(document).ready(function() {
+$(document).ready(function () {
     var rows = document.querySelectorAll('.menu-row');
     for (var i = 0; i < rows.length; i++) {
         table.push(rows[i].querySelectorAll('.menu-item'));
     }
 });
 
-var gamepadAPI = {
-    controller: {},
-    turbo: false,
-    connect: function(){},
-    disconnect: function(){},
-    update: function() { },
-    buttonPressed: function() {},
-    buttons: [
-        'DPad-Up','DPad-Down','DPad-Left','DPad-Right',
-        'Start','Back','Axis-Left','Axis-Right',
-        'LB','RB','Power','A','B','X','Y',
-    ],
-    buttonsCache: [],
-    buttonsStatus: [],
-    axesStatus: []
-};
+//show controller toast dialog
+function ShowControllerToast(message, icon){
+    document.querySelector('#controllerToast .toast-body').innerHTML = message;
+    if(icon) document.querySelector('#controllerIcon').className = icon;
+    $('#controllerToast').toast('show');
+}
+
+//show toast dialog
+function ShowToast(message, icon){
+    document.querySelector('#dialogToast .toast-body').innerHTML = message;
+    document.querySelector('#toastIcon').className = icon || "far fa-bell";
+    $('#dialogToast').toast('show');
+}
 
 //controller connected
-gamepadAPI.connect = function(e) {
-    console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-                e.gamepad.index, e.gamepad.id, e.gamepad.buttons.length, e.gamepad.axes.length);
-
-    gamepadAPI.controller = e.gamepad;
-    gamepadAPI.turbo = true;
-
-    var icon = document.querySelector('#controllerIcon');
+window.addEventListener("gamepadconnected", function (e) {
+    let mess = "Gamepad connected: ";
     let controllerName = e.gamepad.id.toLowerCase();
 
-    if(controllerName.includes('xbox'))
-        icon.className = "fab fa-3x fa-xbox";
-    else if(controllerName.includes('play') || controllerName.includes('054c'))
-        icon.className = "fab fa-3x fa-playstation";
-    else 
-        icon.className = "fas fa-3x fa-gamepad";
-
-    document.querySelector('#controllerToast .toast-body').innerHTML = "Gamepad connected: " + e.gamepad.id;
-    $('#controllerToast').toast('show');
-};
-window.addEventListener("gamepadconnected", gamepadAPI.connect);
+    if (controllerName.includes('xbox'))
+        ShowControllerToast(mess + 'Xbox controller', "fab fa-3x fa-xbox");
+    else if (controllerName.includes('play') || controllerName.includes('054c'))
+        ShowControllerToast(mess + 'PlayStation controller', "fab fa-3x fa-playstation");
+    else
+        ShowControllerToast(mess + e.gamepad.id, "fas fa-3x fa-gamepad");
+});
 
 //controller disconnected
-gamepadAPI.disconnect = function(e) {
-    console.log("Gamepad disconnected from index %d: %s",
-                e.gamepad.index, e.gamepad.id);
-    
-    gamepadAPI.turbo = false;
-    delete gamepadAPI.controller;
-
-    document.querySelector('#controllerToast .toast-body').innerHTML = "Gamepad disconnected.";
-    $('#controllerToast').toast('show');
-};
-window.addEventListener("gamepaddisconnected", gamepadAPI.disconnect);
+window.addEventListener("gamepaddisconnected", function (e) {
+    ShowControllerToast("Gamepad disconnected.");
+});
 
 //detect keyboard input
 $(document).keydown(function (e) {
     console.log('key: ' + e.which.toString());
-    
+
     //detect keypress
     if (e.which == keyUp) {
         seletedRow--;
@@ -117,3 +96,39 @@ $(document).keydown(function (e) {
     //set new selected
     table[seletedRow][selectedCol].classList.add("menu-selected");
 });
+
+var gamepad = new Gamepad();
+gamepad.bind(Gamepad.Event.CONNECTED, function(device) {
+    // a new gamepad connected
+    //console.log(device);
+});
+gamepad.bind(Gamepad.Event.DISCONNECTED, function(device) {
+    // gamepad disconnected
+});
+gamepad.bind(Gamepad.Event.UNSUPPORTED, function(device) {
+    // an unsupported gamepad connected (add new mapping)
+});
+
+gamepad.bind(Gamepad.Event.BUTTON_DOWN, function(e) {
+    // e.control of gamepad e.gamepad pressed down
+    console.log('down');
+    console.log(e);
+});
+
+gamepad.bind(Gamepad.Event.BUTTON_UP, function(e) {
+    // e.control of gamepad e.gamepad released
+    console.log('up');
+    console.log(e);
+});
+
+gamepad.bind(Gamepad.Event.AXIS_CHANGED, function(e) {
+    // e.axis changed to value e.value for gamepad e.gamepad
+});
+
+gamepad.bind(Gamepad.Event.TICK, function(gamepads) {
+    // gamepads were updated (around 60 times a second)
+});
+
+if (!gamepad.init()) {
+    // Your browser does not support gamepads, get the latest Google Chrome or Firefox
+}

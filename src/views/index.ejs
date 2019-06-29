@@ -14,6 +14,7 @@
     <script src="./js/moment.min.js"></script>
     <script src="./js/jquery.min.js"></script>
     <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/gamepad.min.js"></script>
     <script src="./js/index.js"></script>
 
     <title>Home Media Center</title>
@@ -30,6 +31,18 @@
                             <tr>
                                 <td>
                                     <i id='controllerIcon' class="fab fa-3x" style="margin: 10px 0px 10px 10px;"></i>
+                                </td>
+                                <td style="width: 100%;">
+                                    <div class="toast-body col-sm align-items-center"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="dialogToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
+                        <table>
+                            <tr>
+                                <td>
+                                    <i id='toastIcon' style="margin: 10px 0px 10px 10px;"></i>
                                 </td>
                                 <td style="width: 100%;">
                                     <div class="toast-body col-sm align-items-center"></div>
