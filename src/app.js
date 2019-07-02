@@ -7,19 +7,15 @@ var favicon = require("serve-favicon");
 var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
+const puppeteer = require('puppeteer');
+var robot = require("./utils/hdi");
 
 //read config file
 require('toml-require').install({ toml: require('toml') });
 var config = require('./config.toml');
 
-//load robotjs to control mouse, keyboard
-var robot = require("robotjs");
-robot.setMouseDelay(2);
-
-//express routings
-var routes = require("./routes/index");
-var castRouter = require("./routes/cast");
-var users = require("./routes/users");
+//create chrome window
+var page = null;
 
 //create express app
 var app = express();
@@ -35,12 +31,17 @@ app.set("view engine", "ejs");
 // add favicon
 app.use(favicon(__dirname + "/public/favicon.ico"));
 
+//load plugin
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+//express routings
+var routes = require("./routes/index");
+var castRouter = require("./routes/cast");
+var users = require("./routes/users");
 app.use("/", routes);
 app.use("/cast", castRouter);
 app.use("/users", users);
@@ -79,19 +80,38 @@ app.use(function (err, req, res, next) {
 app.set("port", process.env.PORT || 3000);
 
 function moveMouse(pos) {
-    var mouse = robot.getMousePos();
-    robot.moveMouse(mouse.x + pos[0] * config.mouseSpeed, mouse.y + pos[1] * config.mouseSpeed);
+    robot.moveMouseRelative(pos[0], pos[1]);
 }
 
 io.on('connection', function (socket) {
-    socket.on('mouse', function (msg) {
-        moveMouse(msg);
+    socket.on('leftAnalog', function (msg) {
+        var pos = msg;
+        pos[0] = pos[0] * config.leftAnalogMouseSpeed;
+        pos[1] = pos[1] * config.leftAnalogMouseSpeed;
+        moveMouse(pos);
+    });
+    socket.on('rightAnalog', function (msg) {
+        var pos = msg;
+        pos[0] = pos[0] * config.rightAnalogMouseSpeed;
+        pos[1] = pos[1] * config.rightAnalogMouseSpeed;
+        moveMouse(pos);
     });
 });
 
-// var server = app.listen(app.get("port"), function () {
-//     debug("Express server listening on port " + server.address().port);
-// });
-http.listen(3000, function () {
+//run web server
+http.listen(3000, async () => {
     console.log('listening on *:3000');
+
+    // const browser = await puppeteer.launch({
+    //     headless: false,
+    //     args: [
+    //         '--disable-infobars',
+    //         '--start-fullscreen',
+    //         '--kiosk',
+    //         '--disable-session-crashed-bubble',
+    //         '--noerrdialogs'
+    //     ]
+    // });
+    // page = await browser.newPage();
+    // await page.goto('http://localhost:3000/');
 });

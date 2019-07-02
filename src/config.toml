@@ -4,4 +4,5 @@ pusherSecret = '6b4015c7500bec118ba1'
 pusherCluster = 'ap1'
 pusherChannel = 'tv1'
 
-mouseSpeed = 20
+leftAnalogMouseSpeed = 10
+rightAnalogMouseSpeed = 20

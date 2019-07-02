@@ -99,10 +99,8 @@ function keypress(keycode) {
 }
 
 //move mouse
-function movemouse(pos) {
-    console.log("Analog stick: ");
-    console.log(pos);
-    socket.emit('mouse', pos);
+function movemouse(analog, pos) {
+    socket.emit(analog, pos);
 }
 
 //detect keyboard input
@@ -157,9 +155,9 @@ gamepad.on('press', 'd_pad_right', () => {
 });
 
 gamepad.on('hold', 'stick_axis_left', (e) => {
-    movemouse(e.value);
+    movemouse('leftAnalog', e.value);
 });
 
 gamepad.on('hold', 'stick_axis_right', (e) => {
-    movemouse(e.value);
+    movemouse('rightAnalog', e.value);
 });

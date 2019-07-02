@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "http": "0.0.0",
     "morgan": "^1.7.0",
+    "puppeteer": "^1.18.1",
     "pusher": "^2.2.0",
     "robotjs": "^0.5.1",
     "serve-favicon": "^2.3.0",
