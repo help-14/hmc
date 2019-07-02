@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,500,700&display=swap" rel="stylesheet" />
+
+    <link href="./stylesheets/all.min.css" rel="stylesheet" />
+    <link href="./stylesheets/bootstrap.min.css" rel="stylesheet" />
+
+    <script src="./js/pusher.min.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/receivePush.js"></script>
+    <script src="./js/qrcode.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var qrcode = new QRCode("qrcode", {
+                text: document.querySelector("textarea").innerHTML,
+                width: 512,
+                height: 512,
+                colorDark: "#ffffff",
+                colorLight: "transparent",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            //new QRCode(document.getElementById("qrcode"), document.querySelector("textarea").innerHTML);
+        });
+    </script>
+</head>
+
+<body class="bg-dark">
+    <div class="container-fluid vh-100">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-auto text-center p-5"></div>
+        </div>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-auto text-center p-5">
+                <div id="qrcode"></div>
+            </div>
+        </div>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-auto text-center p-3">
+                <h2 class="text-white">Scan this with mobile app</h2>
+            </div>
+        </div>
+
+        <textarea style="visibility: hidden"><%= qrcode %></textarea>
+    </div>
+</body>
+
+</html>

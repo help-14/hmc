@@ -11,22 +11,25 @@
     <link href="./stylesheets/main.css" rel="stylesheet" />
     <link href="./stylesheets/carousel.css" rel="stylesheet" />
 
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./js/pusher.min.js"></script>
     <script src="./js/moment.min.js"></script>
     <script src="./js/jquery.min.js"></script>
     <script src="./js/bootstrap.bundle.min.js"></script>
     <script src="./js/gamepad.min.js"></script>
     <script src="./js/index.js"></script>
+    <script src="./js/receivePush.js"></script>
 
     <title>Home Media Center</title>
-
 </head>
 
 <body>
-	<div class="container-fluid h-100 d-flex flex-column">
-		<div class="row">
+    <div class="container-fluid h-100 d-flex flex-column">
+        <div class="row">
             <div class="col-sm d-flex justify-content-center align-items-center align-items-left">
                 <div style="position: absolute; left: 0; padding-left: 50px;">
-                    <div id="controllerToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
+                    <div id="controllerToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+                        data-delay="3000">
                         <table>
                             <tr>
                                 <td>
@@ -38,7 +41,8 @@
                             </tr>
                         </table>
                     </div>
-                    <div id="dialogToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
+                    <div id="dialogToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+                        data-delay="3000">
                         <table>
                             <tr>
                                 <td>
@@ -52,24 +56,23 @@
                     </div>
                 </div>
             </div>
-			<div class="col-sm">
-				<h1 id="datetime" class="display-4 text-right text-light font-weight-lighter">
-					<script lang="javascript">
-						var update = function () {
-							document.querySelector("#datetime").innerHTML = moment().format('HH:mm');
-						}
-						update();
-						setInterval(update, 10000);
-					</script>
-				</h1>
-			</div>
-		</div>
+            <div class="col-sm">
+                <h1 id="datetime" class="display-4 text-right text-light font-weight-lighter">
+                    <script lang="javascript">
+                        var update = function () {
+                            document.querySelector("#datetime").innerHTML = moment().format('HH:mm');
+                        }
+                        update();
+                        setInterval(update, 10000);
+                    </script>
+                </h1>
+            </div>
+        </div>
         <div class="row flex-grow-1" style="overflow-y: auto;">
             <div class="row__inner menu-row align-items-center">
                 <div class="tile menu-item menu-selected">
                     <div class="tile__media">
-                        <img class="tile__img" src="./images/popcorn@2x.png"
-                             alt="" />
+                        <img class="tile__img" src="./images/popcorn@2x.png" alt="" />
                     </div>
                     <div class="tile__details">
                         <div class="tile__title text-light">
@@ -80,8 +83,7 @@
 
                 <div class="tile menu-item">
                     <div class="tile__media">
-                        <img class="tile__img" src="./images/radio@2x.png"
-                             alt="" />
+                        <img class="tile__img" src="./images/radio@2x.png" alt="" />
                     </div>
                     <div class="tile__details">
                         <div class="tile__title text-light">
@@ -92,8 +94,7 @@
 
                 <div class="tile menu-item">
                     <div class="tile__media">
-                        <img class="tile__img" src="./images/steam@2x.png"
-                             alt="" />
+                        <img class="tile__img" src="./images/steam@2x.png" alt="" />
                     </div>
                     <div class="tile__details text-light">
                         <div class="tile__title">
@@ -104,8 +105,7 @@
 
                 <div class="tile menu-item">
                     <div class="tile__media">
-                        <img class="tile__img" src="./images/kodi@2x.png"
-                             alt="" />
+                        <img class="tile__img" src="./images/kodi@2x.png" alt="" />
                     </div>
                     <div class="tile__details">
                         <div class="tile__title text-light">
@@ -136,11 +136,14 @@
                     <img class="small-menu-item" src="./images/spotify.png" alt="spotify" />
                 </div>
                 <div class="menu-item">
-                    <img class="small-menu-item" src="./images/cast.png" alt="cast" />
+                    <a href="./cast">
+                        <img class="small-menu-item" src="./images/cast.png" alt="cast" />
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-    
+
 </body>
+
 </html>

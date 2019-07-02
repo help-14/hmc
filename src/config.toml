@@ -1,0 +1,7 @@
+pusherAppId = '814880'
+pusherKey = '74923caab1352f6a9f10'
+pusherSecret = '6b4015c7500bec118ba1'
+pusherCluster = 'ap1'
+pusherChannel = 'tv1'
+
+mouseSpeed = 20

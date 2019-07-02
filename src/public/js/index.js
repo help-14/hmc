@@ -4,10 +4,13 @@ const keyRight = 39;
 const keyDown = 40;
 const keyEnter = 13;
 const keySpace = 32;
+const keyBackSpace = 8;
 
 var seletedRow = 0;
 var selectedCol = 0;
 var table = [];
+
+var socket = io();
 
 //find all menu items
 $(document).ready(function () {
@@ -18,14 +21,14 @@ $(document).ready(function () {
 });
 
 //show controller toast dialog
-function ShowControllerToast(message, icon){
+function ShowControllerToast(message, icon) {
     document.querySelector('#controllerToast .toast-body').innerHTML = message;
-    if(icon) document.querySelector('#controllerIcon').className = icon;
+    if (icon) document.querySelector('#controllerIcon').className = icon;
     $('#controllerToast').toast('show');
 }
 
 //show toast dialog
-function ShowToast(message, icon){
+function ShowToast(message, icon) {
     document.querySelector('#dialogToast .toast-body').innerHTML = message;
     document.querySelector('#toastIcon').className = icon || "far fa-bell";
     $('#dialogToast').toast('show');
@@ -49,18 +52,16 @@ window.addEventListener("gamepaddisconnected", function (e) {
     ShowControllerToast("Gamepad disconnected.");
 });
 
-//detect keyboard input
-$(document).keydown(function (e) {
-    console.log('key: ' + e.which.toString());
-
+//handling user input
+function keypress(keycode) {
     //detect keypress
-    if (e.which == keyUp) {
+    if (keycode == keyUp) {
         seletedRow--;
     }
-    else if (e.which == keyDown) {
+    else if (keycode == keyDown) {
         seletedRow++;
     }
-    else if (e.which == keyLeft) {
+    else if (keycode == keyLeft) {
         selectedCol--;
         if (selectedCol < 0) {
             if (seletedRow > 0) {
@@ -70,7 +71,7 @@ $(document).keydown(function (e) {
             else selectedCol = 0;
         }
     }
-    else if (e.which == keyRight) {
+    else if (keycode == keyRight) {
         selectedCol++;
         if (selectedCol >= table[seletedRow].length) {
             if (seletedRow < table.length - 1) {
@@ -95,40 +96,70 @@ $(document).keydown(function (e) {
 
     //set new selected
     table[seletedRow][selectedCol].classList.add("menu-selected");
-});
-
-var gamepad = new Gamepad();
-gamepad.bind(Gamepad.Event.CONNECTED, function(device) {
-    // a new gamepad connected
-    //console.log(device);
-});
-gamepad.bind(Gamepad.Event.DISCONNECTED, function(device) {
-    // gamepad disconnected
-});
-gamepad.bind(Gamepad.Event.UNSUPPORTED, function(device) {
-    // an unsupported gamepad connected (add new mapping)
-});
-
-gamepad.bind(Gamepad.Event.BUTTON_DOWN, function(e) {
-    // e.control of gamepad e.gamepad pressed down
-    console.log('down');
-    console.log(e);
-});
-
-gamepad.bind(Gamepad.Event.BUTTON_UP, function(e) {
-    // e.control of gamepad e.gamepad released
-    console.log('up');
-    console.log(e);
-});
-
-gamepad.bind(Gamepad.Event.AXIS_CHANGED, function(e) {
-    // e.axis changed to value e.value for gamepad e.gamepad
-});
-
-gamepad.bind(Gamepad.Event.TICK, function(gamepads) {
-    // gamepads were updated (around 60 times a second)
-});
-
-if (!gamepad.init()) {
-    // Your browser does not support gamepads, get the latest Google Chrome or Firefox
 }
+
+//move mouse
+function movemouse(pos) {
+    console.log("Analog stick: ");
+    console.log(pos);
+    socket.emit('mouse', pos);
+}
+
+//detect keyboard input
+$(document).keydown(function (e) {
+    keypress(e.which);
+});
+
+// control gamepad
+const gamepad = new Gamepad();
+
+gamepad.on('connect', e => {
+    console.log(`controller ${e.index} connected!`);
+});
+
+gamepad.on('press', 'button_1', () => {
+    //button_1 - A (XBOX) / X (PS3/PS4)
+    keypress(keySpace);
+});
+
+gamepad.on('press', 'button_2', () => {
+    //button_2 - B (XBOX) / Circle (PS3/PS4)
+    keypress(keyBackSpace);
+});
+
+gamepad.on('press', 'button_3', () => {
+    //button_3 - X (XBOX) / Square (PS3/PS4)
+    //keypress(keySpace);
+});
+
+gamepad.on('press', 'button_4', () => {
+    //button_4 - Y (XBOX) / Triangle (PS3/PS4)
+    //keypress(keySpace);
+});
+
+gamepad.on('press', 'd_pad_up', () => {
+    //d_pad_up - Up on the D-Pad (XBOX/PS3/PS4)
+    keypress(keyUp);
+});
+
+gamepad.on('press', 'd_pad_down', () => {
+    //d_pad_down - Down on the D-Pad (XBOX/PS3/PS4)
+    keypress(keyDown);
+});
+
+gamepad.on('press', 'd_pad_left', () => {
+    //d_pad_left - Left on the D-Pad (XBOX/PS3/PS4)
+    keypress(keyLeft);
+});
+gamepad.on('press', 'd_pad_right', () => {
+    //d_pad_right - Right on the D-Pad (XBOX/PS3/PS4)
+    keypress(keyRight);
+});
+
+gamepad.on('hold', 'stick_axis_left', (e) => {
+    movemouse(e.value);
+});
+
+gamepad.on('hold', 'stick_axis_right', (e) => {
+    movemouse(e.value);
+});
