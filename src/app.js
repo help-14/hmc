@@ -7,8 +7,10 @@ var favicon = require("serve-favicon");
 var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
-const puppeteer = require('puppeteer');
+//const puppeteer = require('puppeteer');
 var robot = require("./utils/hdi");
+
+//var controller = require('./utils/controller');
 
 //read config file
 require('toml-require').install({ toml: require('toml') });
@@ -85,16 +87,13 @@ function moveMouse(pos) {
 
 io.on('connection', function (socket) {
     socket.on('leftAnalog', function (msg) {
-        var pos = msg;
-        pos[0] = pos[0] * config.leftAnalogMouseSpeed;
-        pos[1] = pos[1] * config.leftAnalogMouseSpeed;
-        moveMouse(pos);
+        robot.moveMouseRelative(msg[0] * config.leftAnalogMouseSpeed, msg[1] * config.leftAnalogMouseSpeed);
     });
     socket.on('rightAnalog', function (msg) {
-        var pos = msg;
-        pos[0] = pos[0] * config.rightAnalogMouseSpeed;
-        pos[1] = pos[1] * config.rightAnalogMouseSpeed;
-        moveMouse(pos);
+        robot.moveMouseRelative(msg[0] * config.rightAnalogMouseSpeed, msg[1] * config.rightAnalogMouseSpeed);
+    });
+    socket.on('mouseclick', function (msg) {
+        robot.mouseClick(msg);
     });
 });
 

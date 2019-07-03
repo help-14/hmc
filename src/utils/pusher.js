@@ -11,8 +11,8 @@ var pusher = new Pusher({
     encrypted: true
 });
 
-function SendPush(eventName, data) {
-    pusher.trigger(config.pusherChannel, eventName, data);
-}
-
-module.exports = SendPush;
+module.exports = {
+    SendPush: function (eventName, data) {
+        pusher.trigger(config.pusherChannel, eventName, data);
+    }
+};

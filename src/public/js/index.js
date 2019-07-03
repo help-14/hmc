@@ -98,11 +98,6 @@ function keypress(keycode) {
     table[seletedRow][selectedCol].classList.add("menu-selected");
 }
 
-//move mouse
-function movemouse(analog, pos) {
-    socket.emit(analog, pos);
-}
-
 //detect keyboard input
 $(document).keydown(function (e) {
     keypress(e.which);
@@ -127,12 +122,12 @@ gamepad.on('press', 'button_2', () => {
 
 gamepad.on('press', 'button_3', () => {
     //button_3 - X (XBOX) / Square (PS3/PS4)
-    //keypress(keySpace);
+    socket.emit('mouseclick', 'left');
 });
 
 gamepad.on('press', 'button_4', () => {
     //button_4 - Y (XBOX) / Triangle (PS3/PS4)
-    //keypress(keySpace);
+    socket.emit('mouseclick', 'left');
 });
 
 gamepad.on('press', 'd_pad_up', () => {
@@ -155,9 +150,9 @@ gamepad.on('press', 'd_pad_right', () => {
 });
 
 gamepad.on('hold', 'stick_axis_left', (e) => {
-    movemouse('leftAnalog', e.value);
+    socket.emit('leftAnalog', e.value);
 });
 
 gamepad.on('hold', 'stick_axis_right', (e) => {
-    movemouse('rightAnalog', e.value);
+    socket.emit('rightAnalog', e.value);
 });
