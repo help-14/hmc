@@ -55,6 +55,7 @@ window.addEventListener("gamepaddisconnected", function (e) {
 //handling user input
 function keypress(keycode) {
     //detect keypress
+    console.log(keycode);
     if (keycode == keyUp) {
         seletedRow--;
     }
@@ -100,7 +101,7 @@ function keypress(keycode) {
 
 //detect keyboard input
 $(document).keydown(function (e) {
-    keypress(e.which);
+    //keypress(e.which);
 });
 
 // control gamepad
