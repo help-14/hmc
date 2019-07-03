@@ -7,8 +7,9 @@ var favicon = require("serve-favicon");
 var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
-//const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer');
 var robot = require("./utils/hdi");
+var sleep = require('sleep');
 
 //var controller = require('./utils/controller');
 
@@ -101,16 +102,27 @@ io.on('connection', function (socket) {
 http.listen(3000, async () => {
     console.log('listening on *:3000');
 
-    // const browser = await puppeteer.launch({
-    //     headless: false,
-    //     args: [
-    //         '--disable-infobars',
-    //         '--start-fullscreen',
-    //         '--kiosk',
-    //         '--disable-session-crashed-bubble',
-    //         '--noerrdialogs'
-    //     ]
-    // });
-    // page = await browser.newPage();
-    // await page.goto('http://localhost:3000/');
+    var screen = robot.screenSize();
+    const width = screen.width;
+    const height = screen.height;
+
+    const browser = await puppeteer.launch({
+        headless: false,
+        args: [
+            '--disable-infobars',
+            '--start-fullscreen',
+            '--kiosk',
+            '--disable-session-crashed-bubble',
+            '--noerrdialogs',
+            '--window-size=${ width },${ height }'
+        ]
+    });
+    page = await browser.newPage();
+    await page.setViewport({ width, height });
+
+    sleep.msleep(500);
+    robot.moveMouseAbsolute(width-24, 22);
+    robot.mouseClick(robot.MOUSE_LEFT_BUTTON, false);
+
+    await page.goto('http://localhost:3000/');
 });

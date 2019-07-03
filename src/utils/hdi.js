@@ -42,6 +42,10 @@ module.exports = {
             robot.typeString(text);
     },
 
+    screenSize: function () {
+        return robot.getScreenSize();
+    },
+
     //hold down key
     KEY_TOGGLE_UP: 'up',
     KEY_TOGGLE_DOWN: 'down',
